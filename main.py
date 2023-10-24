@@ -5,8 +5,8 @@ import os
 import json
 import requests
 
-# API_ROOT = 'https://api.utdnebula.com'
-API_ROOT = 'http://localhost:8080'
+API_ROOT = 'https://api.utdnebula.com'
+# API_ROOT = 'http://localhost:8080'
 API_KEY = os.environ.get('API_KEY')
 
 def make_request(path: str, params: dict = {}):
@@ -19,12 +19,23 @@ def find_by_id(type: str, id: str):
     return make_request(f'{type}/{id}')
 
 def main():
+    c = make_request('course', params={
+        'subject_prefix': 'MATH',
+        'course_number': '2417',
+        'catalog_year': '22',
+    })
+
+    obj = json.loads(c.text)['data']
+    # print(obj)
+
     r = make_request('section', params={
-        'academic_session.name': '23F',
-        # 'meetings.location.building': 'JO',
-        # 'meetings.location.room': '1.102',
-        # 'meetings.meeting_days': 'Monday',
-        # 'meetings.start_time': '0000-01-01T10:00:00-05:50',
+        'academic_session.name': '22F',
+        # 'section_number': '0H1',
+        # 'course_reference': obj[0]['_id']
+        'meetings.location.building': 'HH',
+        'meetings.location.room': '2.402',
+        'meetings.meeting_days': 'Tuesday',
+        'meetings.start_time': '0000-01-01T16:00:00-05:50',
         # 'instruction_mode': 'hybrid',
     })
 
