@@ -102,14 +102,16 @@ def main():
     query = {}
     while True:
         try:
-            s = input('>>> ')
+            s = input('::: ')
             if s == 'exit':
                 break
             if s == 'help':
                 print('UTD Clubber - Dev Dashboard')
-                print('Enter space-separated keys and values to trigger a query.')
-                print(' Possible keys: session, building, room, meeting_days')
-                print('You can also enter a command to take actions on the current query.')
+                # print('You can also enter a command to take actions on the current query.')
+                print()
+                print('  query <params>   request sections from the API, using space-separated')
+                print('                   key/value pairs to specify certain attributes.')
+                print('                   possible keys: session, building, room, meeting_days')
                 print('  show [n]         shows the current query results. if n is specified,')
                 print('                   shows up to n queries. n can also be "length", which')
                 print('                   shows the size of the query results.')
@@ -159,14 +161,25 @@ def main():
                     for t, section, meeting in sorted_sections:
                         course = get_course_from_section(section)
                         print(day, t.isoformat(), f"{course['subject_prefix']}{course['course_number']}.{section['section_number']}")
-            else:
+            elif s.startswith('query'):
+                s = s.replace('query', '').strip()
                 params = {}
                 for part in s.split():
                     if '=' in part:
                         params[part.split('=')[0]] = part.split('=')[1]
-                query = params
-                sections = find_all_sections(**params)
-                print(f'Found {len(sections)} sections, enter "query" to show.')
+                    else:
+                        # invalid query
+                        break
+                else:
+                    query = params
+                    sections = find_all_sections(**params)
+                    print(f'Found {len(sections)} sections, enter "show" to show.')
+                    continue
+                print('Malformed query!')
+                continue
+            else:
+                if s:
+                    print(f'clbr: command not found: {s.split()[0]}')
         except KeyboardInterrupt:
             pass
         except EOFError:
