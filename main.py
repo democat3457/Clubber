@@ -60,7 +60,7 @@ def find_sections_of_course(prefix:str, number:str|int, year:str|int, semester:s
         'subject_prefix': prefix,
         'course_number': str(number),
         'catalog_year': str(year),
-    })
+    })[0]['_id']
 
     r = make_request('section', params={
         'academic_session.name': str(year)+semester,
@@ -160,7 +160,7 @@ def main():
                     sorted_sections = sorted(day_sections[day], key=lambda x: x[0])
                     for t, section, meeting in sorted_sections:
                         course = get_course_from_section(section)
-                        print(day, t.isoformat(), f"{course['subject_prefix']}{course['course_number']}.{section['section_number']}")
+                        print(day, f'{t.isoformat()}-{from_go_time(meeting["end_time"]).isoformat()}', f"{course['subject_prefix']}{course['course_number']}.{section['section_number']}")
             elif s.startswith('query'):
                 s = s.replace('query', '').strip()
                 params = {}
@@ -173,7 +173,7 @@ def main():
                 else:
                     query = params
                     sections = find_all_sections(**params)
-                    print(f'Found {len(sections)} sections, enter "show" to show.')
+                    print(f'Found {len(sections)} sections.')
                     continue
                 print('Malformed query!')
                 continue
