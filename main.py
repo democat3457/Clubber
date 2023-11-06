@@ -5,6 +5,7 @@ load_dotenv()
 import os
 import json
 import requests
+from pathlib import Path
 
 from tqdm import tqdm
 
@@ -68,28 +69,41 @@ def find_all_sections(session:Optional[str]=None, *,
 
 def main():
     sections = []
+    query = {}
     while True:
         s = input()
         if s == 'exit':
             break
         if s.startswith('query'):
             amnt = 0
+            if 'length' in s:
+                print(f'Found {len(sections)} sections')
+                continue
             if ' ' in s:
                 amnt = int(s.split(' ')[1])
             if amnt > 0:
                 print(json.dumps(sections[:amnt], indent=2))
             else:
                 print(json.dumps(sections, indent=2))
+        elif s == 'export':
+            name = "query"
+            if not len(query):
+                name += "All"
+            for key in ('session', 'building', 'room', 'meeting_days'):
+                if key in query:
+                    value = query[key]
+                    if isinstance(value, list):
+                        value = ''.join(value)
+                    name += value
+            Path(name+'.json').write_text(json.dumps(sections, indent=2))
         else:
             params = {}
             for part in s.split():
                 if '=' in part:
                     params[part.split('=')[0]] = part.split('=')[1]
+            query = params
             sections = find_all_sections(**params)
             print(f'Found {len(sections)} sections, enter "query" to show.')
-
-    sections = find_all_sections(building='ECSS', room='2.102')
-    print(len(sections))
 
     # r = make_request('section', params={
     #     'academic_session.name': '22F',
@@ -101,14 +115,6 @@ def main():
     #     'meetings.start_time': '0000-01-01T16:00:00-05:50',
     #     # 'instruction_mode': 'hybrid',
     # })
-
-    # print(r.status_code)
-
-    # obj = json.loads(r.text)
-
-    # print(obj['data'][0])
-
-    # print("Length:", len(obj['data']))
 
 if __name__ == '__main__':
     main()
