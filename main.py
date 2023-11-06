@@ -169,6 +169,8 @@ def main():
                 print(f'Found {len(sections)} sections, enter "query" to show.')
         except KeyboardInterrupt:
             pass
+        except EOFError:
+            break
 
     if len(request_cache):
         CACHE_FILE.write_bytes(pickle.dumps(request_cache))
