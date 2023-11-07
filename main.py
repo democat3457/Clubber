@@ -30,6 +30,9 @@ def make_request(path: str, params: dict = {}):
     }, params=params)
     data = json.loads(response.text)['data']
 
+    if data == 'mongo: no documents in result':
+        data = None
+
     request_cache[p] = data
 
     return data
@@ -161,7 +164,11 @@ def main():
                     sorted_sections = sorted(day_sections[day], key=lambda x: x[0])
                     for t, section, meeting in sorted_sections:
                         course = get_course_from_section(section)
-                        print(day, f'{t.isoformat()}-{from_go_time(meeting["end_time"]).isoformat()}', f"{course['subject_prefix']}{course['course_number']}.{section['section_number']}")
+                        if course is not None:
+                            section_title = f"{course['subject_prefix']}{course['course_number']}.{section['section_number']}"
+                        else:
+                            section_title = f"???.{section['section_number']}"
+                        print(day, f'{t.isoformat()}-{from_go_time(meeting["end_time"]).isoformat()}', section_title)
             elif s.startswith('query'):
                 s = s.replace('query', '').strip()
                 params = {}
