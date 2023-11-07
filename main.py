@@ -155,7 +155,8 @@ def main():
                     if 'meetings' in section:
                         for meeting in section['meetings']:
                             for meeting_day in meeting['meeting_days']:
-                                day_sections[meeting_day].append((from_go_time(meeting['start_time']), section, meeting))
+                                if meeting_day in days:
+                                    day_sections[meeting_day].append((from_go_time(meeting['start_time']), section, meeting))
                 for day in days:
                     sorted_sections = sorted(day_sections[day], key=lambda x: x[0])
                     for t, section, meeting in sorted_sections:
