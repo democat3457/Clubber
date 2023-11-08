@@ -14,7 +14,7 @@ from tqdm import tqdm
 
 API_ROOT = 'https://api.utdnebula.com'
 # API_ROOT = 'http://localhost:8080'
-API_KEY = os.environ.get('API_KEY')
+API_KEY = os.environ.get('NEBULA_API_KEY')
 
 CACHE_FILE = Path(datetime.now().strftime('%Y%m%d-%H%m%s')+'.cache')
 request_cache = {}
