@@ -1,0 +1,54 @@
+[
+  {
+    "id": 2646,
+    "map": 1772,
+    "name": "UT Dallas: Dawn to Dusk",
+    "description": "An overview of the daily comings and goings at UTD.",
+    "weight": 0,
+    "schedule": "",
+    "image": "utdallas_69111465_Small.jpg",
+    "altitude": 0,
+    "lng": 0,
+    "lat": 0,
+    "externalLink": "https://www.youtube.com/watch?v=0q_osTT3WWE"
+  },
+  {
+    "id": 2658,
+    "map": 1772,
+    "name": "Virtual Tour",
+    "description": "Take a guided virtual tour of UT Dallas at any time from any place.",
+    "weight": 0,
+    "schedule": "",
+    "image": "utdallas_84616898_Small.jpg",
+    "altitude": 0,
+    "lng": 0,
+    "lat": 0,
+    "externalLink": "http://youvis.it/Gv2Mmg"
+  },
+  {
+    "id": 2711,
+    "map": 1772,
+    "name": "Self-Guided Campus Tour",
+    "description": "Welcome to UT Dallas!",
+    "weight": 0,
+    "schedule": "",
+    "image": "i-1.php.png",
+    "altitude": 0,
+    "lng": 0,
+    "lat": 0,
+    "externalLink": ""
+  },
+  {
+    "id": 2982,
+    "map": 1772,
+    "name": "Athletics Facilities Tour",
+    "description": "The UT Dallas Intercollegiate Athletics Department is made up of 16 teams that are part of the NCAA Division III American Southwest Conference.",
+    "weight": 0,
+    "schedule": "",
+    "image": "COMETSenhanced.png",
+    "altitude": 0,
+    "lng": 0,
+    "lat": 0,
+    "externalLink": ""
+  }
+]

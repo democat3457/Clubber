@@ -37,3 +37,6 @@ def search(query: str, num: int|None = None) -> list[dict]:
     else:
         return make_request('search', params=dict(q=q, ppage=num))['data']
 
+# todo: wayfinding?
+# https://api.concept3d.com/wayfinding/?map=1772&v2=true&toLat=32.99151664964702&toLng=-96.75121201281732&toLevel=-1&currentLevel=-1&stamp=MfWP0jYm&fromLevel=0&fromLat=32.9878185&fromLng=-96.7479817&key=0001085cc708b9cef47080f064612ca5
+
