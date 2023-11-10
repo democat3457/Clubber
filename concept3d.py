@@ -75,19 +75,30 @@ def draw_kml(building_code: str, *, room: Optional[str]=None, floor: Optional[st
         kml = simplekml.Kml()
         normal_color = simplekml.Color.black
         highlight_color = simplekml.Color.hex('e87400')
+        label_color = simplekml.Color.lightgray
+        label_highlight_color = simplekml.Color.hex('fce5c7')
+        room_background = simplekml.Color.hexa('aaaaaa55')
         found_highlight = False
         for room in interior['children']['locations']:
             if filter_query in room['name']:
+                # room_multipol = kml.newmultigeometry(name=room['name'])
                 highlight = False
-                if highlight_query and highlight_query in room['name']:
+                if highlight_query and highlight_query == room['name']:
                     found_highlight = True
                     highlight = True
                 paths = get_paths(room)
                 coords = [(lon, lat) for lat, lon in paths]
                 coords.append(coords[0])
-                line = kml.newlinestring(name=room['name'], coords=coords)
-                line.linestyle.color = highlight_color if highlight else normal_color
-                line.linestyle.width = 4 if highlight else 2
+                polygon = kml.newpolygon(name=room['name'], outerboundaryis=coords)
+                polygon.linestyle.color = highlight_color if highlight else normal_color
+                polygon.linestyle.width = 4 if highlight else 2
+                polygon.polystyle.color = room_background
+                point_coords = room['lng'], room['lat']  # lon,lat
+                point = kml.newpoint(name=room['name'], coords=[point_coords])
+                point.description = "class status"
+                point.style.iconstyle.icon.href = ""
+                point.style.labelstyle.scale = 0.75 if highlight else 0.55
+                point.style.labelstyle.color = label_highlight_color if highlight else label_color
         if highlight_query and not found_highlight:
             print(f"Unable to find room {highlight_query}")
         return kml
