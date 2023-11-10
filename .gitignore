@@ -2,4 +2,5 @@
 __pycache__/
 /*.json
 *.cache
+*.kml
 .DS_Store
