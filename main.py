@@ -123,7 +123,8 @@ def main():
                             section_title = f"{course['subject_prefix']}{course['course_number']}.{section['section_number']}"
                         else:
                             section_title = f"???.{section['section_number']}"
-                        print(day, f'{t.isoformat()}-{nebula.from_go_time(meeting["end_time"]).isoformat()}', section_title)
+                        meeting_room = '' if 'room' in query and 'building' in query else f' {meeting["location"]["building"]} {meeting["location"]["room"]}'
+                        print(f'{day}{meeting_room} {t.isoformat()}-{nebula.from_go_time(meeting["end_time"]).isoformat()} {section_title}')
             elif s.startswith('query'):
                 s = s.replace('query', '').strip()
                 params = {}
