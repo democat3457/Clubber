@@ -18,7 +18,7 @@ def main():
     while True:
         try:
             s = input('::: ')
-            if s == 'exit':
+            if s == 'exit' or s == 'quit':
                 break
             if s == 'help':
                 print('UTD Clubber - Dev Dashboard')
@@ -37,7 +37,7 @@ def main():
                 print('  draw             highlights current building or room and exports to')
                 print('                   a kml file.')
                 print('  export           exports current query result to a json file.')
-                print('  exit             exits the program.')
+                print('  quit/exit        exits the program.')
             elif s.startswith('show'):
                 amnt = 0
                 if 'length' in s:
