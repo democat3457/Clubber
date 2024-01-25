@@ -136,8 +136,11 @@ def main():
                         break
                 else:
                     query = params
-                    sections = nebula.find_all_sections(**params)
-                    print(f'Found {len(sections)} sections.')
+                    try:
+                        sections = nebula.find_all_sections(**params)
+                        print(f'Found {len(sections)} sections.')
+                    except TypeError as e:
+                        print(f'Unexpected argument: {e}')
                     continue
                 print('Malformed query!')
                 continue
