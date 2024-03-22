@@ -12,16 +12,27 @@ import simplekml
 import nebula
 import concept3d
 
+project_name = 'UTD Clubber - Dev Dashboard'
+app_short_name = 'clbr'
+
 def main():
+    # last two digits of year + S/F
+    today = datetime.today()
+    current_year = str(today.year).rjust(4)[-2:]
+    current_sem = 'S' if today.month <= 5 else 'F' if today.month >= 8 else 'U'
+    current_session = current_year + current_sem
+
     sections = []
     query = {}
+    print(f'Welcome to {project_name}!')
+    print('Run "help" to show commands.')
     while True:
         try:
             s = input('::: ')
             if s == 'exit' or s == 'quit':
                 break
             if s == 'help':
-                print('UTD Clubber - Dev Dashboard')
+                print(project_name)
                 # print('You can also enter a command to take actions on the current query.')
                 print()
                 print('  query <params>   request sections from the API, using space-separated')
@@ -146,7 +157,7 @@ def main():
                 continue
             else:
                 if s:
-                    print(f'clbr: command not found: {s.split()[0]}')
+                    print(f'{app_short_name}: command not found: {s.split()[0]}')
         except KeyboardInterrupt:
             pass
         except EOFError:
