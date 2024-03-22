@@ -44,12 +44,17 @@ def search(query: str, num: int|None = None) -> list[dict]:
 # TODO: wayfinding?
 # https://api.concept3d.com/wayfinding/?map=1772&v2=true&toLat=32.99151664964702&toLng=-96.75121201281732&toLevel=-1&currentLevel=-1&stamp=MfWP0jYm&fromLevel=0&fromLat=32.9878185&fromLng=-96.7479817&key=0001085cc708b9cef47080f064612ca5
 
-def get_building_interior(building_code: str):
+def get_building_interior(building_code: str) -> dict | None:
     interiors = find_category(CATEGORY_INTERIOR)
     for category in interiors['children']['categories']:
         if f'({building_code})' in category['name']:
             return find_category(category['catId'])
     return None
+
+def get_building_rooms(building_code: str) -> list[dict]:
+    if (interior:=get_building_interior(building_code)) is not None:
+        return interior['children']['locations']
+    return []
 
 
 def get_paths(room_dict: dict) -> list[tuple[float, float]]:

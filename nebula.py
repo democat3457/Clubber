@@ -45,9 +45,15 @@ def from_go_datetime(dt: str):
 def to_go_datetime(dt: datetime):
     return dt.isoformat()
 def from_go_time(t: str):
-    return from_go_datetime(t).time()
+    try:
+        # v1 times : go format
+        return from_go_datetime(t).time()
+    except:
+        # v2 times : standard format
+        return datetime.strptime(t, '%I:%M%p').time()
 def to_go_time(t: time):
-    return '0000-01-01T'+t.isoformat()+'-05:50'
+    # return '0000-01-01T'+t.isoformat()+'-05:50'
+    return t.strftime('%I:%M%p')
 
 
 def get_course_from_section(section):
