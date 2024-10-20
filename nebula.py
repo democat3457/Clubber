@@ -37,6 +37,19 @@ def make_request(path: str, params: dict = {}):
 
     return data
 
+def request_all(path: str, params: dict = {}, *, tqdm_obj: tqdm | None = None):
+    objs = []
+    offset = 0
+    t = tqdm_obj
+    while True:
+        obj = make_request(path, params=dict(offset=str(offset), **params))
+        if obj is None:
+            break
+        objs.extend(obj)
+        offset += 20
+        if t: t.update(len(obj))
+    return objs
+
 def find_by_id(type: str, id: str):
     return make_request(f'{type}/{id}')
 
@@ -91,19 +104,8 @@ def find_all_sections(session:Optional[str]=None, *,
         base_params['meetings.location.room'] = room
     if meeting_days is not None:
         base_params['meetings.meeting_days'] = str(meeting_days)
-    
-    sections = []
 
-    t = tqdm()
-    offset = 0
-    while True:
-        obj = make_request('section', params=dict(offset=str(offset), **base_params))
-        if obj is None:
-            break
-        sections.extend(obj)
-        offset += 20
-        t.update(len(obj))
-    return sections
+    return request_all('section', base_params, tqdm_obj=tqdm())
 
 def save_cache():
     if len(request_cache):
