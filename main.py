@@ -115,6 +115,47 @@ def main():
                 kml_name += '.kml'
                 kml.save(kml_name)
                 print(f'Saved kml to {kml_name}')
+            elif s.startswith('occupation'):
+                args = s.split()[1:]
+                building_code = ''
+                if not len(args) and 'building' in query:
+                    building_code = query['building']
+                elif len(args):
+                    building_code = args[0]
+                if not building_code:
+                    print('No building in query found!')
+                    continue
+                interior = concept3d.get_building_interior(building_code)
+                if interior is None:
+                    print(f'Unable to find rooms for building {building_code}')
+                    continue
+                ground_floor = interior['level']
+                if len(args) < 2:
+                    if 'room' in query:
+                        floor = query['room'].split('.')[0]
+                    else:
+                        floor = ground_floor
+                else:
+                    if '.' in args[1]:
+                        floor = args[1].split('.')[0]
+                    else:
+                        floor = args[1]
+                floor = int(floor)
+                if len(args) < 3:
+                    if 'meeting_days' in query and len(query['meeting_days']) == 1:
+                        day = query['meeting_days'][0]
+                    else:
+                        print('No single meeting day in query found!')
+                        continue
+                else:
+                    day = args[2]
+                if len(args) < 4:
+                    print('No time found!')
+                    continue
+                else:
+                    tm = datetime.strptime(args[3], "%I:%M%p").time()
+                room_nums = [ r['name'].split(' ')[1] for r in interior['children']['locations'] ]
+                all_sections = nebula.find_all_sections(session=current_session, building=building_code)
             elif s.startswith('schedule'):
                 days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
                 if ' ' in s:
@@ -149,9 +190,9 @@ def main():
                     query = params
                     try:
                         sections = nebula.find_all_sections(**params)
-                        print(f'Found {len(sections)} sections.')
+                        print(f"Found {len(sections)} sections.")
                     except TypeError as e:
-                        print(f'Unexpected argument: {e}')
+                        print(f"Unexpected argument: {e}")
                     continue
                 print('Malformed query!')
                 continue
