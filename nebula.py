@@ -47,7 +47,7 @@ def request_all(path: str, params: dict = {}, *, tqdm_obj: tqdm | None = None):
             break
         objs.extend(obj)
         offset += 20
-        if t: t.update(len(obj))
+        if t is not None: t.update(len(obj))
     return objs
 
 def find_by_id(type: str, id: str):
